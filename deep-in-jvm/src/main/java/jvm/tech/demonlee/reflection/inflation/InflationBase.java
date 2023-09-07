@@ -1,6 +1,5 @@
 package jvm.tech.demonlee.reflection.inflation;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
@@ -9,6 +8,9 @@ import java.util.Arrays;
  * @desc Obtain benchmark data required for testing
  */
 public class InflationBase {
+
+    public static void target(int i) {
+    }
 
     public static void testTarget() throws Exception {
         long[] costs = new long[20];
@@ -20,6 +22,7 @@ public class InflationBase {
                 costs[j++] = cost;
                 currentTime = tmpTime;
             }
+            target(128);
         }
         displayCosts(costs); // base: 67ms
     }

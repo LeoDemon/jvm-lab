@@ -15,7 +15,7 @@ public class InflationV0 {
     public static void testTarget() throws Exception {
         Class<?> clazz = Class.forName(InflationV0.class.getName());
         Method method = clazz.getMethod("target", int.class);
-        method.invoke(null, 0);
+        method.invoke(null, 128);
     }
 
     // 1. close inflation mechanism: -Dsun.reflect.noInflation=true
