@@ -40,6 +40,11 @@ public class OverrideBridgeAnalysis {
         Merchant<VIP> merchant = new VIPOnlyMerchant();
         double price = merchant.actionPrice(vip);
         Number price2 = merchant.actionPrice2(vip);
+
+        // compile error for invoking ACC_BRIDGE method:
+        // Incompatible type: Customer cannot be converted to VIP
+        // Customer customer = new VIP();
+        // double price3 = new VIPOnlyMerchant().actionPrice(customer);
     }
 }
 
