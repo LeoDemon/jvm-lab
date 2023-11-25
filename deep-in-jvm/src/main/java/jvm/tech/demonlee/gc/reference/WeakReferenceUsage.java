@@ -12,24 +12,20 @@ import java.util.Objects;
 public class WeakReferenceUsage {
 
     public static void main(String[] args) throws InterruptedException {
-        Student liLei = new Student("10001", "LiLei");
-        WeakReference<Student> studentSoftRef = new WeakReference<>(liLei);
-        checkExists(studentSoftRef);
+        WeakReference<Student> weakRef = new WeakReference<>(new Student("10001", "LiLei"));
+        checkExists(weakRef);
 
-        liLei = null;
         System.gc();
 
-        // Thread.sleep(2000L);
-
-        checkExists(studentSoftRef);
+        checkExists(weakRef);
     }
 
-    private static void checkExists(WeakReference<Student> studentSoftRef) {
-        Student cacheStu = studentSoftRef.get();
+    private static void checkExists(WeakReference<Student> weakRef) {
+        Student cacheStu = weakRef.get();
         if (Objects.isNull(cacheStu)) {
-            System.out.println("liLei is killed.");
+            System.out.println("stu is killed.");
             return;
         }
-        System.out.println("liLei is alive: " + cacheStu);
+        System.out.println("stu is alive: " + cacheStu);
     }
 }
