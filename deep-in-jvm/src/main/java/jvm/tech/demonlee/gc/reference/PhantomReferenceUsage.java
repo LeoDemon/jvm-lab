@@ -1,6 +1,8 @@
 package jvm.tech.demonlee.gc.reference;
 
 import jvm.tech.demonlee.common.model.Student;
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
@@ -11,23 +13,49 @@ import java.util.Objects;
  * @author Demon.Lee
  * @date 2023-11-12 17:49
  */
+@Log4j2
 public class PhantomReferenceUsage {
-    static ReferenceQueue<Student> referenceQueue = new ReferenceQueue<>();
 
-    public static void main(String[] args) throws InterruptedException {
-        Student liLei = new Student("10001", "LiLei");
-        PhantomReference<Student> studentRef = new PhantomReference<>(liLei, referenceQueue);
+    @SneakyThrows
+    public void usageViaNotify(Student stu) {
+        ReferenceQueue<Student> referenceQueue = new ReferenceQueue<>();
+        PhantomReference<Student> studentRef = new PhantomReference<>(stu, referenceQueue);
+        log.info("student[{}] is: {}", stu.getName(), studentRef.get());
 
-        liLei = null;
+        stu = null;
         System.gc();
 
-        Reference<? extends Student> cacheStuRef = referenceQueue.remove(2000L);
-        if (Objects.isNull(cacheStuRef)) {
-            System.out.println("no ref in Reference Queue...");
+        Reference<? extends Student> cacheRef = referenceQueue.remove(3000L);
+        if (Objects.isNull(cacheRef)) {
+            log.info("no ref in Reference Queue...");
             return;
         }
-        System.out.println("student ref was polled in Reference Queue...");
-        Student student = cacheStuRef.get(); // get always return null
-        System.out.println("student is: " + student);
+        if (cacheRef == studentRef) {
+            log.info("student was killed by GC, you can clean up some resource now...");
+        }
+        log.info("student is: {}", cacheRef.get());
+    }
+
+    // -Xlog:gc -Xlog:gc*
+    @SneakyThrows
+    public void checkGC() {
+        byte[] _200MB = new byte[1024 * 1024 * 200];
+        ReferenceQueue<byte[]> referenceQueue = new ReferenceQueue<>();
+        PhantomReference<byte[]> objRef = new PhantomReference<>(_200MB, referenceQueue);
+        log.info("object is: {}", objRef.get());
+
+        _200MB = null;
+        System.gc();
+
+        Reference<?> cacheRef = referenceQueue.remove(3000L);
+        if (Objects.isNull(cacheRef)) {
+            log.info("no ref in Reference Queue...");
+            return;
+        }
+
+        if (cacheRef == objRef) {
+            log.info("object was killed by GC, you can clean up some resource now...");
+        }
+        log.info("student is: {}", cacheRef.get());
     }
 }

@@ -29,3 +29,8 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+tasks.test {
+    // for print GC via Junit5 test cases
+    // jvmArgs("-Xlog:gc:file=./gc.log:time")
+}
