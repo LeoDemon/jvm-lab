@@ -11,6 +11,11 @@ class PhantomReferenceUsageTest {
     private final PhantomReferenceUsage phantomReferenceUsage = new PhantomReferenceUsage();
 
     @Test
+    void testRefersTo() {
+        phantomReferenceUsage.refersTo(new Student("10001", "LiLei"));
+    }
+
+    @Test
     void usage() {
         phantomReferenceUsage.usageViaNotify(new Student("10001", "LiLei"));
     }

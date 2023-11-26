@@ -16,6 +16,14 @@ import java.util.Objects;
 @Log4j2
 public class PhantomReferenceUsage {
 
+    public void refersTo(Student stu) {
+        ReferenceQueue<Student> referenceQueue = new ReferenceQueue<>();
+        PhantomReference<Student> studentRef = new PhantomReference<>(stu, referenceQueue);
+        Student stu2 = new Student("10002", "HanMeiMei");
+        log.info("stu is phantom reference: {}", studentRef.refersTo(stu));
+        log.info("stu2 is phantom reference: {}", studentRef.refersTo(stu2));
+    }
+
     @SneakyThrows
     public void usageViaNotify(Student stu) {
         ReferenceQueue<Student> referenceQueue = new ReferenceQueue<>();

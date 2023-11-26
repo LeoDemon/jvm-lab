@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class WeakReferenceUsage {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         WeakReference<Student> weakRef = new WeakReference<>(new Student("10001", "LiLei"));
         checkExists(weakRef);
 
