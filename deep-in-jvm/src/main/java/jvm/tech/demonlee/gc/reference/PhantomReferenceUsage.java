@@ -25,6 +25,19 @@ public class PhantomReferenceUsage {
     }
 
     @SneakyThrows
+    public void isEnqueued(Student stu) {
+        ReferenceQueue<Student> referenceQueue = new ReferenceQueue<>();
+        PhantomReference<Student> studentRef = new PhantomReference<>(stu, referenceQueue);
+
+        stu = null;
+        System.gc();
+        Thread.sleep(3000);
+
+        log.info("stu is enqueued: {}", studentRef.isEnqueued());
+        log.info("stu enqueue: {}", studentRef.enqueue());
+    }
+
+    @SneakyThrows
     public void usageViaNotify(Student stu) {
         ReferenceQueue<Student> referenceQueue = new ReferenceQueue<>();
         PhantomReference<Student> studentRef = new PhantomReference<>(stu, referenceQueue);

@@ -16,6 +16,11 @@ class PhantomReferenceUsageTest {
     }
 
     @Test
+    void usageByIsEnqueued() {
+        phantomReferenceUsage.isEnqueued(new Student("10001", "LiLei"));
+    }
+
+    @Test
     void usage() {
         phantomReferenceUsage.usageViaNotify(new Student("10001", "LiLei"));
     }
