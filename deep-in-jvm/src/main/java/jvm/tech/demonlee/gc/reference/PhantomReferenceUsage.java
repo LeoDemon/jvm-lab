@@ -33,15 +33,39 @@ public class PhantomReferenceUsage {
         stu = null;
         System.gc();
 
+        checkReferenceExist(referenceQueue, studentRef);
+    }
+
+    @SneakyThrows
+    private void checkReferenceExist(ReferenceQueue<Student> referenceQueue, PhantomReference<Student> studentRef) {
         Reference<? extends Student> cacheRef = referenceQueue.remove(3000L);
         if (Objects.isNull(cacheRef)) {
             log.info("no ref in Reference Queue...");
             return;
         }
+
         if (cacheRef == studentRef) {
             log.info("student was killed by GC, you can clean up some resource now...");
         }
-        log.info("student is: {}", cacheRef.get());
+        log.info("the phantom reference of student is: {}", cacheRef.get());
+    }
+
+    public void usageViaNotifyAndGCAgain(Student stu) {
+        ReferenceQueue<Student> referenceQueue = new ReferenceQueue<>();
+        PhantomReference<Student> studentRef = new PhantomReference<>(stu, referenceQueue);
+        log.info("the phantom reference of student[{}] is: {}", stu.getName(), studentRef.get());
+
+        log.info("the first gc ...");
+        stu = null;
+        System.gc();
+
+        checkReferenceExist(referenceQueue, studentRef);
+
+        // GC again
+        log.info("the second gc ...");
+        System.gc();
+
+        checkReferenceExist(referenceQueue, studentRef);
     }
 
     // -Xlog:gc -Xlog:gc*

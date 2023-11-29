@@ -25,6 +25,16 @@ class PhantomReferenceUsageTest {
         phantomReferenceUsage.usageViaNotify(new StudentEx("10001", "LiLei"));
     }
 
+    @Test
+    void usageByGCAgain() {
+        phantomReferenceUsage.usageViaNotifyAndGCAgain(new Student("10001", "LiLei"));
+    }
+
+    @Test
+    void usageByOverrideFinalizeAndGCAgain() {
+        phantomReferenceUsage.usageViaNotifyAndGCAgain(new StudentEx("10001", "LiLei"));
+    }
+
     // -Xlog:gc:time -Xlog:gc*:time
     @Test
     void checkGC() {
