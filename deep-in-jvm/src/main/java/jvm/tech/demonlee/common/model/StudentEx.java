@@ -9,13 +9,26 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class StudentEx extends Student {
 
+    private byte[] memory;
+
     public StudentEx(String id, String name) {
         super(id, name);
     }
 
+    public StudentEx(String id, String name, byte[] memory) {
+        super(id, name);
+        this.memory = memory;
+    }
+
     @Override
     protected void finalize() throws Throwable {
-        super.finalize();
-        log.info("I am finalized: " + getName());
+        try {
+            log.info("I am finalized: {}", getName());
+            // release some resources here...
+        } catch (Throwable throwable) {
+            log.error("finalize failed: ", throwable);
+        } finally {
+            super.finalize();
+        }
     }
 }
