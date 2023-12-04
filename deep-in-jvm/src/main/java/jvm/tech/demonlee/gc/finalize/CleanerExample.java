@@ -21,6 +21,15 @@ public class CleanerExample implements AutoCloseable {
         this.cleanable = cleaner.register(this, state);
     }
 
+    public CleanerExample(boolean nonStaticClass) {
+        if (nonStaticClass) {
+            this.state = new StateEx();
+        } else {
+            this.state = new State();
+        }
+        this.cleanable = cleaner.register(this, state);
+    }
+
     public void execute() {
         log.info("do sth via state: {}", state);
     }
@@ -30,16 +39,26 @@ public class CleanerExample implements AutoCloseable {
         cleanable.clean();
     }
 
+    // static inner class
     static class State implements Runnable {
+
+        private byte[] memory;
+
         State() {
             // initialize State needed for cleaning action
             log.info("create some resources here...");
+            memory = new byte[1024 * 1024 * 200];
         }
 
         @Override
         public void run() {
             // cleanup action accessing State, executed at most once
             log.info("release some resources now...");
+            memory = null;
         }
+    }
+
+    // non-static inner class
+    class StateEx extends State {
     }
 }
