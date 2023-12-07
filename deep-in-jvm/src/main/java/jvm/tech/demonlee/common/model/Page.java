@@ -28,6 +28,7 @@ public class Page {
         this.snapshot = null;
     }
 
+    @Getter
     public static class Url {
         private final String path;
 

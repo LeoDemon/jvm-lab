@@ -11,6 +11,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Demon.Lee
@@ -34,24 +35,31 @@ public class WeakReferenceUsage {
 
     @SneakyThrows
     public void usage() {
+        Page.Url url1 = new Page.Url("/index");
+        Page.Url url2 = new Page.Url("/hi");
         ReferenceQueue<Page.Url> refQueue = new ReferenceQueue<>();
-        List<Page> pages = mockPages(refQueue);
+        List<Page> pages = mockPages(refQueue, url1, url2);
         checkAndCollectSnapshot(pages, refQueue);
 
+        url1 = null;
         TimeUnit.SECONDS.sleep(1);
         System.gc();
-        TimeUnit.SECONDS.sleep(10);
+
+        url2 = null;
+        TimeUnit.SECONDS.sleep(1);
+        System.gc();
+
+        TimeUnit.SECONDS.sleep(5);
     }
 
-    private List<Page> mockPages(ReferenceQueue<Page.Url> refQueue) {
-        List<String> urls = List.of("hi", "index");
-        return urls.stream().map(u -> mockPage(refQueue, u)).collect(Collectors.toList());
+    private List<Page> mockPages(ReferenceQueue<Page.Url> refQueue, Page.Url... urls) {
+        return Stream.of(urls).map(u -> mockPage(refQueue, u)).collect(Collectors.toList());
     }
 
-    private Page mockPage(ReferenceQueue<Page.Url> urlRefQueue, String u) {
-        WeakReference<Page.Url> url = new WeakReference<>(new Page.Url("/" + u), urlRefQueue);
-        Page.Snapshot snapshot = new Page.Snapshot(u.substring(1), UUID.randomUUID().toString());
-        return new Page(u, url, snapshot);
+    private Page mockPage(ReferenceQueue<Page.Url> urlRefQueue, Page.Url url) {
+        WeakReference<Page.Url> urlRef = new WeakReference<>(url, urlRefQueue);
+        Page.Snapshot snapshot = new Page.Snapshot("Test" + url.hashCode(), UUID.randomUUID().toString());
+        return new Page(url.getPath(), urlRef, snapshot);
     }
 
     private void checkAndCollectSnapshot(List<Page> pages, ReferenceQueue<Page.Url> urlRefQueue) {
