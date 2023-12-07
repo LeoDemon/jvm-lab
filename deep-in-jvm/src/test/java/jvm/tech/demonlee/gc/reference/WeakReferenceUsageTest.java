@@ -48,4 +48,9 @@ public class WeakReferenceUsageTest {
         weakReferenceUsage.checkExists(weakRef);
     }
 
+    @Test
+    void usageForMappingClear() {
+        WeakReferenceUsage weakReferenceUsage = new WeakReferenceUsage();
+        weakReferenceUsage.usage();
+    }
 }
