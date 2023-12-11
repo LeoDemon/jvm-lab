@@ -32,5 +32,11 @@ test {
 
 tasks.test {
     // for print GC via Junit5 test cases
-    // jvmArgs("-Xlog:gc:file=./gc.log:time")
+
+    // for Java 9+
+    // jvmArgs("-XX:StartFlightRecording=dumponexit=true,filename=./gc.jfr", "-Xlog:gc*,gc+ref*=trace:file=./gc.log:time")
+    jvmArgs("-Xlog:gc,gc+ref*=trace:file=./gc.log:time")
+
+    // for Java 8
+    // jvmArgs("-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintReferenceGC")
 }
