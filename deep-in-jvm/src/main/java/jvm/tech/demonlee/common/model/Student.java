@@ -14,6 +14,10 @@ public class Student {
 
     private LocalDate birthDate;
 
+    private String desc = "test---测试啦";
+
+    private String remark = "remark";
+
     public Student() {
     }
 
@@ -32,10 +36,12 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "--- Student @@@ {" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", birthDate='" + birthDate + '\'' +
+                ", desc ='" + desc + '\'' +
+                ", remark ='" + remark + '\'' +
                 '}';
     }
 }

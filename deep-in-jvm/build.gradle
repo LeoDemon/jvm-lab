@@ -26,6 +26,59 @@ dependencies {
     testImplementation 'org.apache.logging.log4j:log4j-core:2.22.0'
 }
 
+sourceSets {
+    main {
+        java {
+            // 包含特定的包
+            // include 'jvm/tech/demonlee/**'
+
+            // 如果需要排除某些子包或类，可以使用 exclude
+            // exclude 'jvm/tech/demonlee/**'
+        }
+    }
+
+    agent {
+        java {
+            srcDir 'src/main/java'
+            exclude 'jvm/tech/demonlee/**'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'jvm.tech.demonlee.Main'
+        )
+    }
+
+    // 将编译的类和资源包括在JAR中
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+tasks.register('agentJar', Jar) {
+    manifest {
+        attributes(
+                'Main-Class': 'jvm.bytecode.demonlee.AttachAgentMain'
+        )
+    }
+
+    from sourceSets.agent.output
+
+    // 将编译的类和资源包括在JAR中
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    archiveClassifier.set("agent")
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 test {
     useJUnitPlatform()
 }
