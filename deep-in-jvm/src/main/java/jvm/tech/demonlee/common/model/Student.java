@@ -16,8 +16,6 @@ public class Student {
 
     private String desc = "test---测试啦";
 
-    private String remark = "remark";
-
     public Student() {
     }
 
@@ -41,7 +39,10 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", birthDate='" + birthDate + '\'' +
                 ", desc ='" + desc + '\'' +
-                ", remark ='" + remark + '\'' +
                 '}';
+    }
+
+    private void test() {
+        System.out.println("test what?");
     }
 }

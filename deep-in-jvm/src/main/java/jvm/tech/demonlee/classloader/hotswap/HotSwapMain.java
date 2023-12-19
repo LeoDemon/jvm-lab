@@ -1,4 +1,4 @@
-package jvm.tech.demonlee.classloader;
+package jvm.tech.demonlee.classloader.hotswap;
 
 import jvm.tech.demonlee.common.model.Student;
 import jvm.tech.demonlee.common.util.CompilerUtil;

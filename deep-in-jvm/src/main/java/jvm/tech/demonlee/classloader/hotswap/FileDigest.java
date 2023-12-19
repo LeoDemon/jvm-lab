@@ -1,4 +1,4 @@
-package jvm.tech.demonlee.classloader;
+package jvm.tech.demonlee.classloader.hotswap;
 
 import jvm.tech.demonlee.common.util.MD5Util;
 import lombok.extern.log4j.Log4j2;
