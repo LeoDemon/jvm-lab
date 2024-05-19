@@ -14,13 +14,16 @@ public class StringTests {
     @Test
     void stringCompare() {
         String str1 = "abc";
+        String str11 = "abc";
         String str2 = new String("abc");
         String str3 = str2.intern();
 
         log.info("str1: {}, {}", str1.hashCode(), System.identityHashCode(str1));
+        log.info("str11: {}, {}", str11.hashCode(), System.identityHashCode(str11));
         log.info("str2: {}, {}", str2.hashCode(), System.identityHashCode(str2));
         log.info("str3: {}, {}", str3.hashCode(), System.identityHashCode(str3));
 
+        Assertions.assertTrue(str1 == str11);
         Assertions.assertFalse(str1 == str2);
         Assertions.assertFalse(str2 == str3);
         Assertions.assertTrue(str1 == str3);
