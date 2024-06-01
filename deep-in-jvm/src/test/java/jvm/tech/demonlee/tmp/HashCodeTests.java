@@ -1,9 +1,14 @@
 package jvm.tech.demonlee.tmp;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -92,5 +97,24 @@ public class HashCodeTests {
 
         log.info("demo1.hashCode: {}", new CodeDemoEx("Jack.Ma").hashCode());
         log.info("demo2.hashCode: {}", new CodeDemoEx("Jack.Ma").hashCode());
+    }
+
+    @Test
+    void googleGuavaGoodFastHash() {
+        String demo = "2100-王子奇.Jack.Ma";
+        long start1 = System.nanoTime();
+        int hashCode = Objects.hash(demo);
+        long end1 = System.nanoTime();
+        log.info("cost1: {}", end1 - start1);
+        log.info("demo hashCode: {}, {}", hashCode, demo.hashCode());
+
+        HashFunction hashFunction = Hashing.goodFastHash(64);
+        long start2 = System.nanoTime();
+        Hasher hasher = hashFunction.newHasher();
+        hasher.putString(demo, Charset.forName("UTF-8"));
+        long end2 = System.nanoTime();
+        HashCode hashCode2 = hasher.hash();
+        log.info("cost2: {}", end2 - start2);
+        log.info("demo fast hashCode: {}", hashCode2);
     }
 }
