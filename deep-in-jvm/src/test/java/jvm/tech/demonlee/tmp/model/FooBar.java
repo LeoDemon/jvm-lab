@@ -26,14 +26,21 @@ public class FooBar implements Cloneable, Comparable<FooBar> {
         this.values = new ArrayList<>();
     }
 
+    public FooBar(String name, int score, List<String> values) {
+        this.name = name;
+        this.score = score;
+        this.values = values;
+    }
+
     public FooBar(FooBar fooBar) {
         this.name = fooBar.name;
+        this.score = fooBar.score;
         this.values = new ArrayList<>(fooBar.values);
     }
 
     public static FooBar newInstance(FooBar fooBar) {
         // return new FooBar(fooBar);
-        return new FooBar(fooBar.name, new ArrayList<>(fooBar.values));
+        return new FooBar(fooBar.name, fooBar.score, new ArrayList<>(fooBar.values));
     }
 
     public void addValue(String value) {
