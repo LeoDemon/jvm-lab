@@ -21,6 +21,7 @@ public class StudentEx extends Student {
     }
 
     @Override
+    @SuppressWarnings("removal")
     protected void finalize() throws Throwable {
         try {
             log.info("I am finalized: {}", getName());

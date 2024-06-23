@@ -18,6 +18,7 @@ public class FinalizeEscapeGC {
     }
 
     @Override
+    @SuppressWarnings("removal")
     protected void finalize() throws Throwable {
         super.finalize();
         log.info("oh, finalize method is executed.");
