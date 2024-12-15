@@ -1,8 +1,9 @@
 package jvm.tech.demonlee.tmp;
 
-import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import lombok.extern.log4j.Log4j2;
 
 /**
  * @author Demon.Lee
@@ -27,5 +28,14 @@ public class StringTests {
         Assertions.assertFalse(str1 == str2);
         Assertions.assertFalse(str2 == str3);
         Assertions.assertTrue(str1 == str3);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        int[] a = new int[]{1, 2, 3};
+        String className = a.getClass().getName();
+        System.out.println(className);
+        System.out.println(a.getClass().getCanonicalName());
+        Class<?> clazz = Class.forName(className);
+        System.out.println("en..."+clazz.getName());
     }
 }

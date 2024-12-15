@@ -22,8 +22,14 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.22.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.22.0'
 
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+    implementation 'org.hibernate:hibernate-validator:8.0.1.Final'
+
     testImplementation 'org.apache.logging.log4j:log4j-api:2.22.0'
     testImplementation 'org.apache.logging.log4j:log4j-core:2.22.0'
+
+    testImplementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+    testImplementation 'org.hibernate:hibernate-validator:8.0.1.Final'
 
     annotationProcessor("com.google.auto.value:auto-value:1.10.4")
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.4")
